@@ -6,3 +6,4 @@ edition = "2021"
 [dependencies]
 tokio = { version = "1.42.0", features = ["rt", "rt-multi-thread", "macros", "net", "io-util"] }
 anyhow = "1.0.95"
+log = "0.4.22"

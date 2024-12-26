@@ -1,4 +1,5 @@
 use anyhow::Result;
+use log::warn;
 use tokio::net::{TcpListener, TcpStream};
 
 const BUF_SIZE: usize = 1024;
@@ -10,7 +11,11 @@ async fn main() -> Result<()> {
 
     loop {
         let (stream, raddr) = listener.accept().await?;
-        tokio::spawn(async move { process_redis_conn(stream) })
+        break tokio::spawn(async move {
+            if let err = process_redis_conn(stream).await {
+                warn!("error processing conn with{}:{:?}", raddr, err);
+            }
+        });
     }
 }
 
