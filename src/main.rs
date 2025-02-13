@@ -8,7 +8,6 @@ const BUF_SIZE: usize = 1024;
 
 #[tokio::main]
 async fn main() -> Result<()> {
-
     let addr = "0.0.0.0:6379";
     let listener = TcpListener::bind(addr).await?;
 
@@ -31,7 +30,7 @@ async fn process_redis_conn(mut stream: TcpStream) -> Result<()> {
         //tcp stream readable
         stream.readable().await?;
         let mut buf = Vec::with_capacity(BUF_SIZE);
-        match stream.try_read(&mut buf) {
+        match stream.try_read_buf(&mut buf) {
             Ok(0) => break,
 
             Ok(n) => {
